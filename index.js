@@ -51,20 +51,16 @@ bot.command('add_wallet', (ctx) => {
 })
 
 bot.command('wallets', (ctx) => {
-    let wallets = Object.keys(ctx.session.wallets);
+    let wallets = Object.keys(ctx.session.wallets)
     if (wallets.length === 0) {
         return ctx.reply('You don\'t have any wallets')
     }
 
-    const output = wallets.map((wallet) => {
-        return wallet
-    })
-
-    return ctx.reply('Yours wallets:\n' + output.join('\n'))
+    return ctx.reply('Yours wallets:\n' + wallets.join('\n'))
 })
 
 bot.command('stat', (ctx) => {
-    let wallets = Object.keys(ctx.session.wallets);
+    let wallets = Object.keys(ctx.session.wallets)
     if (wallets.length === 0) {
         return ctx.reply('You don\'t have any wallets')
     }
@@ -79,17 +75,20 @@ bot.command('stat', (ctx) => {
                     console.log(err)
                     return ctx.reply('error')
                 }
-                const output = [
-                    '💳 Wallet: ' + wallet,
-                    '🏦 Pending Balance: ' + (body.stats.balance / 100) + ' ETN',
-                    '💵 Total Paid: ' + (body.stats.paid / 100) + ' ETN',
-                    '⚙️ Hash Rate: ' + (body.stats.hashrate | 0)
-                ]
-                ctx.reply(output.join('\n'));
+                if (body.stats) {
+                    const output = [
+                        '💳 Wallet: ' + wallet,
+                        '🏦 Pending Balance: ' + (body.stats.balance / 100) + ' ETN',
+                        '💵 Total Paid: ' + (body.stats.paid / 100) + ' ETN',
+                        '⚙️ Hash Rate: ' + (body.stats.hashrate | 0)
+                    ]
+                    return ctx.reply(output.join('\n'))
+                }
+                return ctx.reply('Error')
             })
         } catch (e) {
             console.log('Error: ' + e.message)
-            ctx.reply('error');
+            ctx.reply('error')
         }
     })
 })
