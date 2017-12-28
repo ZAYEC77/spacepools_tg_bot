@@ -83,7 +83,7 @@ bot.command('stat', (ctx) => {
                     '💳 Wallet: ' + wallet,
                     '🏦 Pending Balance: ' + (body.stats.balance / 100) + ' ETN',
                     '💵 Total Paid: ' + (body.stats.paid / 100) + ' ETN',
-                    '⚙️ Hash Rate: ' + body.stats.hashrate
+                    '⚙️ Hash Rate: ' + (body.stats.hashrate | 0)
                 ]
                 ctx.reply(output.join('\n'));
             })
