@@ -10,4 +10,4 @@ RUN npm install --production
 
 ADD . /app
 
-CMD ["pm2-docker", "process.json --env production --update-env"]
+CMD ["pm2-docker", "process.json", "--env", "production", "--update-env"]
