@@ -1,0 +1,20 @@
+{
+  "apps": [
+    {
+      "name": "etn_spacepools_org_bot",
+      "script": "./index.js",
+      "watch": true,
+      "ignore_watch": [
+        "var",
+        "node_modules",
+        ".idea"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}

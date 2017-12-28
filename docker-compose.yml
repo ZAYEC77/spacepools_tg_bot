@@ -1,0 +1,11 @@
+version: '2.1'
+services:
+  bot_app:
+    build: .
+    container_name: bot_app
+    restart: always
+    environment:
+     - BOT_TOKEN=${BOT_TOKEN}
+    logging:
+        options:
+            max-size: 1m
