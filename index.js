@@ -14,7 +14,7 @@ const getStatUrl = (wallet) => {
 }
 
 const getPriceUrl = () => {
-    return 'https://etn.spacepools.org/stats/cmc'
+    return 'https://api.coinmarketcap.com/v1/ticker/electroneum/'
 }
 
 const bot = new Telegraf(process.env.BOT_TOKEN)
