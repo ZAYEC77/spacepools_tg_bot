@@ -82,10 +82,10 @@ bot.command('stat', (ctx) => {
                 }
                 if (body.stats) {
                     const output = [
-                        '💳 Wallet: ' + wallet,
-                        '🏦 Pending Balance: ' + (body.stats.balance / 100) + ' ETN',
-                        '💵 Total Paid: ' + (body.stats.paid / 100) + ' ETN',
-                        '⚙️ Hash Rate: ' + (body.stats.hashrate | 0)
+                        `💳 Wallet: ${wallet}`,
+                        `🏦 Pending Balance: ${body.stats.balance / 100} ETN`,
+                        `💵 Total Paid: ${body.stats.paid / 100} ETN`,
+                        `⚙️ Hash Rate: ${body.stats.hashrate || 0}`
                     ]
                     return ctx.reply(output.join('\n'))
                 }
