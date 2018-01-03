@@ -6,6 +6,11 @@ services:
     restart: always
     environment:
      - BOT_TOKEN=${BOT_TOKEN}
+    volumes:
+      - var_data:/var
     logging:
         options:
             max-size: 1m
+
+volumes:
+  var_data:

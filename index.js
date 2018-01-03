@@ -12,6 +12,11 @@ throttledRequest.configure({
 const getStatUrl = (wallet) => {
     return `https://api.etn.spacepools.org/v1/stats/address/${wallet}`
 }
+
+const getPriceUrl = () => {
+    return 'https://etn.spacepools.org/stats/cmc'
+}
+
 const bot = new Telegraf(process.env.BOT_TOKEN)
 
 const isValidWallet = function (w) {
@@ -53,7 +58,7 @@ bot.command('add_wallet', (ctx) => {
 bot.command('wallets', (ctx) => {
     let wallets = Object.keys(ctx.session.wallets)
     if (wallets.length === 0) {
-        return ctx.reply('You don\'t have any wallets')
+        return ctx.reply(`You don't have any wallets`)
     }
 
     return ctx.reply('Yours wallets:\n' + wallets.join('\n'))
@@ -62,11 +67,10 @@ bot.command('wallets', (ctx) => {
 bot.command('stat', (ctx) => {
     let wallets = Object.keys(ctx.session.wallets)
     if (wallets.length === 0) {
-        return ctx.reply('You don\'t have any wallets')
+        return ctx.reply(`You don't have any wallets`)
     }
     ctx.reply('Please, wait ⌛')
     wallets.map(async (wallet) => {
-
         try {
             let url = getStatUrl(wallet)
             throttledRequest(url, {json: true}, (err, res, body) => {
@@ -77,10 +81,10 @@ bot.command('stat', (ctx) => {
                 }
                 if (body.stats) {
                     const output = [
-                        '💳 Wallet: ' + wallet,
-                        '🏦 Pending Balance: ' + (body.stats.balance / 100) + ' ETN',
-                        '💵 Total Paid: ' + (body.stats.paid / 100) + ' ETN',
-                        '⚙️ Hash Rate: ' + (body.stats.hashrate | 0)
+                        `💳 Wallet: ${wallet}`,
+                        `🏦 Pending Balance: ${body.stats.balance / 100} ETN`,
+                        `💵 Total Paid: ${body.stats.paid / 100} ETN`,
+                        `⚙️ Hash Rate: ${body.stats.hashrate | 0}`
                     ]
                     return ctx.reply(output.join('\n'))
                 }
@@ -89,6 +93,30 @@ bot.command('stat', (ctx) => {
         } catch (e) {
             console.log('Error: ' + e.message)
             ctx.reply('error')
+        }
+    })
+})
+
+const chartEmoji = (value) => {
+    return value > 0 ? '📈' : '📉'
+}
+
+bot.command('price', (ctx) => {
+    ctx.reply('Please, wait ⌛')
+
+    throttledRequest(getPriceUrl(), {json: true}, (err, res, data) => {
+        if (data[0]) {
+            data = data[0]
+            let output = [
+                `💰 ETN to USD: ${data.price_usd}`,
+                `💰 ETN to BTC: ${data.price_btc}`,
+                `${chartEmoji(data.percent_change_1h)} Change 1 hour: ${data.percent_change_1h}%`,
+                `${chartEmoji(data.percent_change_24h)} Change 24 hours: ${data.percent_change_24h}%`,
+                `${chartEmoji(data.percent_change_7d)} Change 7 days: ${data.percent_change_7d}%`,
+            ]
+            ctx.reply(output.join('\n'))
+        } else {
+            return ctx.reply('Error')
         }
     })
 })
