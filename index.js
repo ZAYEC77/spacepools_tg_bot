@@ -102,6 +102,10 @@ const chartEmoji = (value) => {
     return value > 0 ? '📈' : '📉'
 }
 
+const formatPercents = (value) => {
+    return value > 0 ? '+' + value : value
+}
+
 bot.command('price', (ctx) => {
     ctx.reply('Please, wait ⌛')
 
@@ -111,9 +115,9 @@ bot.command('price', (ctx) => {
             let output = [
                 `💰 ETN to USD: ${data.price_usd}`,
                 `💰 ETN to BTC: ${data.price_btc}`,
-                `${chartEmoji(data.percent_change_1h)} Change 1 hour: ${data.percent_change_1h}%`,
-                `${chartEmoji(data.percent_change_24h)} Change 24 hours: ${data.percent_change_24h}%`,
-                `${chartEmoji(data.percent_change_7d)} Change 7 days: ${data.percent_change_7d}%`,
+                `${chartEmoji(data.percent_change_1h)} Change 1 hour: ${formatPercents(data.percent_change_1h)}%`,
+                `${chartEmoji(data.percent_change_24h)} Change 24 hours: ${formatPercents(data.percent_change_24h)}%`,
+                `${chartEmoji(data.percent_change_7d)} Change 7 days: ${formatPercents(data.percent_change_7d)}%`,
             ]
             ctx.reply(output.join('\n'))
         } else {
