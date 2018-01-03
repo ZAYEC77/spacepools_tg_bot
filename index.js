@@ -27,6 +27,7 @@ const helpOutput = [
     '/add_wallet [ENT WALLET]-- add wallet to list',
     '/wallets -- wallets list',
     '/stat -- stat for each wallet',
+    '/price -- price info',
 ]
 
 
